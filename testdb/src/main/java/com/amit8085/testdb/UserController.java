@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService service;
     public UserController(UserService service){
@@ -67,4 +67,12 @@ public class UserController {
                 service.getByNameAndAge(name,age)
         );
     }
+//    @GetMapping("/count")
+//    public ApiResponse<UserResponseDTO> countUser(){
+//        return new ApiResponse<>(
+//                "Success",
+//                "Counted User",
+//                service.countUser()
+//        );
+//    }
 }

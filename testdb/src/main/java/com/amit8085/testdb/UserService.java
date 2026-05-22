@@ -65,11 +65,16 @@ public class UserService {
     //GET BY NAME AND AGE
     public UserResponseDTO getByNameAndAge(String name ,int age){
         User user =repo.findByNameAndAge(name,age);
-        if(user==null)throw new RuntimeException("Invalid User anme and age");
+        if(user==null)throw new RuntimeException("Invalid User name and age");
         return new UserResponseDTO(
                 user.getId(),
                 user.getName(),
                 user.getAge()
         );
+    }
+    //COUNT USER
+    public Long countUser(){
+        return repo.count();
+
     }
 }
