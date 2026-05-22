@@ -52,5 +52,24 @@ public class UserService {
     public void delete(Long id){
         repo.deleteById(id);
     }
+    //GET BY ID
+    public UserResponseDTO getById(Long id){
+        User user =repo.findById(id).orElseThrow(()->new RuntimeException("user id not valid"));
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getAge()
+        );
+    }
 
+    //GET BY NAME AND AGE
+    public UserResponseDTO getByNameAndAge(String name ,int age){
+        User user =repo.findByNameAndAge(name,age);
+        if(user==null)throw new RuntimeException("Invalid User anme and age");
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getAge()
+        );
+    }
 }

@@ -8,18 +8,22 @@ public class UserRequestDTO {
     @NotBlank(message = "Name can not be empty")
     private String name;
 
-    @Min(value = -1,message = "age must be greater than 0")
+    @Min(value = 1,message = "age must be greater than and equal 1")
     private int age;
 
     public String getName(){
+
+
         return name;
     }
 
     public int getAge(){
+
         return age;
     }
 
     public void setName(String name){
+
         this.name=name;
     }
 

@@ -50,4 +50,21 @@ public class UserController {
                 null
         );
     }
+    //GET BY ID
+    @GetMapping("/{id}")
+    public ApiResponse<UserResponseDTO> getById(@Valid @PathVariable Long id){
+        return new ApiResponse<>(
+                "Success",
+                "Fetched by id",
+                service.getById(id)
+        );
+    }
+    @GetMapping("/search")
+    public ApiResponse<UserResponseDTO> getByNameAndAge(@RequestParam String name,@RequestParam int age){
+        return new ApiResponse<>(
+                "Success",
+                "Fetched by name and age",
+                service.getByNameAndAge(name,age)
+        );
+    }
 }
