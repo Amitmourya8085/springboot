@@ -1,45 +1,53 @@
 package com.amit8085.testdb;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
-    @Autowired
-    UserService service;
-
-    @GetMapping("/test")
-    public String testService(){
-        return "ok";
+    private final UserService service;
+    public UserController(UserService service){
+        this.service=service;
     }
-    @PostMapping("/user")
-    public User CreateUser(@RequestBody User user){
-        return service.SaveUser(user);
+    //CREATE REQUEST
+    @PostMapping()
+    public ApiResponse<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO dto){
+        return new ApiResponse<>(
+                "Success",
+                "User Created",
+                service.save(dto)
+        );
     }
-    @GetMapping("/users")
-    public List<User> getUser(){
-        return service.getAllUser();
+    //READ REQUEST
+    @GetMapping
+    public ApiResponse<List<UserResponseDTO>> getAllUser(){
+        return new ApiResponse<>(
+                "Success",
+                "User fetched",
+                service.getAll()
+        );
     }
-    @PutMapping("/user/{id}")
-    public User UpdateUser(@PathVariable Long id,@RequestBody User user){
-        return service.updateUser(id,user);
+    //UPDATE REQUEST
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponseDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UserRequestDTO dto){
+        return new ApiResponse<>(
+                "Success",
+                "UserUpdated",
+                service.update(id,dto)
+        );
     }
-   @DeleteMapping("user/rm/{id}")
-    public String DeleteUser(@PathVariable Long id){
-        return service.DeleteUser(id);
-   }
-   @GetMapping("/user/name/{name}")
-    public List<User> getuser(@PathVariable String name ){
-        return service.getUserByName(name);
-   }
-   @PatchMapping("/user/patch/{id}/name")
-    public User updateName(@PathVariable Long id,String name){
-        return service.UpdateName(id,name);
-   }
-   @GetMapping("/user/count")
-    public Long userCount(){
-        return service.CountUser();
-   }
+    //DELETE REQUEST
+    @DeleteMapping("/{id}")
+    public ApiResponse<UserResponseDTO> deleteUser(@PathVariable Long id){
+       service.delete(id);
+        return new ApiResponse<>(
+                "succes",
+                "User Deleted",
+                null
+        );
+    }
 }

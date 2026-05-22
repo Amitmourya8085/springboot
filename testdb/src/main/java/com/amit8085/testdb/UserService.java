@@ -7,53 +7,50 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepositary repo;
 
-    public User SaveUser(User user){
-        return repo.save(user);
+    private final UserRepositary repo;
+    public UserService(UserRepositary repo){
+        this.repo=repo;
     }
-
-    public List<User> getAllUser(){
-        return repo.findAll();
+    //CREATE
+    public UserResponseDTO save(UserRequestDTO dto){
+        User user = new User();
+        user.setName(dto.getName());
+        user.setAge(dto.getAge());
+        User saved =repo.save(user);
+        return new UserResponseDTO(
+                saved.getId(),
+                saved.getName(),
+                saved.getAge()
+        );
     }
-
-    public User updateUser(Long id,User newUser){
-        User oldUser=repo.findById(id).orElse(null);
-        if(oldUser != null){
-            oldUser.setName(newUser.getName());
-            oldUser.setAge(newUser.getAge());
-            return repo.save(oldUser) ;
-        }
-        return null;
-    }
-
-    public User FindbyidUser(Long id){
-        return repo.findById(id).orElse(null);
+    //READ
+    public List<UserResponseDTO> getAll(){
+        return repo.findAll()
+                .stream()
+                .map(user -> new UserResponseDTO(
+                        user.getId(),
+                        user.getName(),
+                        user.getAge()
+                ))
+                .toList();
 
     }
-
-    public String DeleteUser(Long id){
+    //UPDATE
+    public UserResponseDTO update(Long id,UserRequestDTO dto){
+        User user=repo.findById(id).orElseThrow(()->new RuntimeException("User not Found.."));
+        user.setName(dto.getName());
+        user.setAge(dto.getAge());
+        User updated =repo.save(user);
+        return new UserResponseDTO(
+                updated.getId(),
+                updated.getName(),
+                updated.getAge()
+        );
+    }
+    //DELETE
+    public void delete(Long id){
         repo.deleteById(id);
-        return "Deleted ...";
-
     }
 
-     public List<User> getUserByName(String name){
-        return repo.findByName(name);
-    }
-
-    public User UpdateName(Long id,String name){
-        User user=repo.findById(id).orElse(null);
-        if(user != null){
-            user.setName(name);
-            return repo.save(user);
-        }
-        return null;
-    }
-
-
-    public Long CountUser(){
-        return repo.count();
-    }
 }
