@@ -34,5 +34,5 @@ src/main/java/com/amit8085/testdb/
 ├── entity/          # Persistence Models (Database Schema)
 ├── dto/             # Request/Response Data Contracts
 ├── exception/       # Centralized Global Error Handling
-└── TestdbApplication.java (Entry Point)
+└── TestdbApplication.java (Entry Point).
 
